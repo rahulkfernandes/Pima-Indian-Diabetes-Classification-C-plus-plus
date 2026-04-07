@@ -1,4 +1,15 @@
 #include <Eigen/Dense>
+#include <random>
+#include <tuple>
+
+std::tuple<Eigen::MatrixXd, Eigen::VectorXd,Eigen::MatrixXd, Eigen::VectorXd>
+train_test_split(
+    const Eigen::MatrixXd& features,
+    const Eigen::VectorXd labels,
+    double test_ratio = 0.2,
+    bool shuffle = true,
+    unsigned int seed = 42
+);
 
 class Scaler {
 public:

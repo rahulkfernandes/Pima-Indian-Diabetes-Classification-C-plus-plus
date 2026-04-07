@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <vector>
 #include <cmath>
 
 using namespace std;
@@ -48,51 +47,27 @@ Eigen::MatrixXd load_csv(const string& path, bool has_header = true) {
     return result;
 }
 
-/* -------------------- Train Test Split -------------------- */
-std::tuple<Eigen::MatrixXd, Eigen::VectorXd,Eigen::MatrixXd, Eigen::VectorXd>
-train_test_split(
-    const Eigen::MatrixXd& features,
-    const Eigen::VectorXd labels,
-    double test_ratio,
-    bool shuffle,
-    unsigned int seed
-) {
-    int n_samples = features.rows();
-    int n_test = static_cast<int>(n_samples * test_ratio);
-    int n_train = n_samples - n_test;
 
-    // Create indices
-    std::vector<int> indices(n_samples);
-    std::iota(indices.begin(), indices.end(), 0);
-
-    // Shuffle if needed
-    if (shuffle) {
-        std::mt19937 rng(seed);
-        std::shuffle(indices.begin(), indices.end(), rng);
+/* -------------------- Load config -------------------- */
+std::unordered_map<std::string, std::string> load_config(const std::string& path) {
+    // Check if config file exists
+    std::ifstream file(path);
+    if (!file.is_open()) {
+        throw std::runtime_error("Config file not found: " + path);
     }
     
-    // Split indices
-    vector<int> train_indices(indices.begin(), indices.begin() + n_train);
-    vector<int> test_indices(indices.begin() + n_train, indices.end());
-
-    // Initialize X_train and y_train
-    Eigen::MatrixXd X_train(n_train, features.cols());
-    Eigen::VectorXd y_train(n_train);
-
-    // Build train data
-    for (int i = 0; i < n_train; i++) {
-        X_train.row(i) = features.row(train_indices[i]);
-        y_train.row(i) = labels.row(train_indices[i]);
-    }   
-
-    // Initialize X_train and y_train
-    Eigen::MatrixXd X_test(n_test, features.cols());
-    Eigen::VectorXd y_test(n_test);
-    // Build test data
-    for (int i = 0; i < n_test; i++) {
-        X_test.row(i) = features.row(test_indices[i]);
-        y_test.row(i) = labels.row(test_indices[i]);
+    std::unordered_map<std::string, std::string> config;
+    std::string line;
+    
+    while (std::getline(file, line)) {
+        // Skip empty lines and comments
+        if (line.empty() || line[0] == '#') continue;
+        
+        std::istringstream iss(line);
+        std::string key, value;
+        if (std::getline(iss, key, '=') && std::getline(iss, value)) {
+            config[key] = value;
+        }
     }
-
-    return {X_train, y_train, X_test, y_test};
+    return config;
 }
