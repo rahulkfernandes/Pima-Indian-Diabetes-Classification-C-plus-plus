@@ -1,8 +1,25 @@
 #include <iostream>
 #include "utils.h"
 
+
 int main() {
     Eigen::MatrixXd data = load_csv("../diabetes.csv", true);
 
-    std::cout << data << std::endl;
+    int rows = data.rows();
+    int cols = data.cols();
+
+    Eigen::MatrixXd features = data.leftCols(cols - 1);
+    Eigen::VectorXd labels = data.rightCols(1);
+
+
+    auto [X_train, y_train, X_test, y_test] = train_test_split(
+        features,
+        labels,
+        0.2,
+        true,
+        42
+    );
+    
+    std::cout << "Training set: " << X_train.rows() << " samples" << std::endl;
+    std::cout << "Test set: " << X_test.rows() << " samples" << std::endl;
 }
