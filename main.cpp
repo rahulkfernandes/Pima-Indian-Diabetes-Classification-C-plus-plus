@@ -1,4 +1,5 @@
 #include <iostream>
+#include <torch/torch.h>
 #include "utils.h"
 #include "preprocess.h"
 
@@ -39,4 +40,30 @@ int main() {
 
     std::cout << X_train_scaled << std::endl;
     std::cout << X_test_scaled << std::endl;
+
+    // Convert to torch::Tensor (float32)
+    torch::Tensor X_train_tensor = torch::from_blob(
+        X_train_scaled.data(),
+        {X_train_scaled.rows(), X_train_scaled.cols()},
+        torch::kFloat64
+    ).clone().to(torch::kFloat32);
+
+    torch::Tensor y_train_tensor = torch::from_blob(
+        y_train.data(),
+        {y_train.size()},
+        torch::kFloat64
+    ).clone().to(torch::kFloat32).reshape({-1, 1});
+
+    torch::Tensor X_test_tensor = torch::from_blob(
+        X_test_scaled.data(),
+        {X_test_scaled.rows(), X_test_scaled.cols()},
+        torch::kFloat64
+    ).clone().to(torch::kFloat32);
+
+    torch::Tensor y_test_tensor = torch::from_blob(
+        y_test.data(),
+        {y_test.size()},
+        torch::kFloat64
+    ).clone().to(torch::kFloat32).reshape({-1, 1});
+
 }
