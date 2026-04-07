@@ -3,9 +3,11 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
+/* -------------------- Load CSV -------------------- */
 Eigen::MatrixXd load_csv(const string& path, bool has_header = true) {
     ifstream file(path);
     if (!file.is_open()) {
@@ -46,6 +48,7 @@ Eigen::MatrixXd load_csv(const string& path, bool has_header = true) {
     return result;
 }
 
+/* -------------------- Train Test Split -------------------- */
 std::tuple<Eigen::MatrixXd, Eigen::VectorXd,Eigen::MatrixXd, Eigen::VectorXd>
 train_test_split(
     const Eigen::MatrixXd& features,

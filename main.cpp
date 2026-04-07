@@ -1,5 +1,6 @@
 #include <iostream>
 #include "utils.h"
+#include "preprocess.h"
 
 
 int main() {
@@ -22,4 +23,11 @@ int main() {
     
     std::cout << "Training set: " << X_train.rows() << " samples" << std::endl;
     std::cout << "Test set: " << X_test.rows() << " samples" << std::endl;
+
+    Scaler scaler;                // stack allocation
+    Eigen::MatrixXd X_train_scaled = scaler.fit_transform(X_train);
+    Eigen::MatrixXd X_test_scaled = scaler.transform(X_test);
+
+    std::cout << X_train_scaled << std::endl;
+    std::cout << X_test_scaled << std::endl;
 }

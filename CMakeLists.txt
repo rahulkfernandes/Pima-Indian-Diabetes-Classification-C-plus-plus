@@ -13,7 +13,7 @@ find_package(Torch REQUIRED)
 find_package(Eigen3 REQUIRED CONFIG)
 
 # Create the executable
-add_executable(my_app main.cpp utils.cpp)
+add_executable(my_app main.cpp utils.cpp preprocess.cpp)
 
 # Link the libraries
 target_link_libraries(my_app ${TORCH_LIBRARIES} Eigen3::Eigen)
