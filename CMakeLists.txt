@@ -13,9 +13,9 @@ find_package(Torch REQUIRED)
 find_package(Eigen3 REQUIRED CONFIG)
 
 # Create the executable
-add_executable(my_app main.cpp utils.cpp preprocess.cpp model.cpp train.cpp)
+add_executable(main main.cpp utils.cpp preprocess.cpp model.cpp train.cpp)
 
 # Link the libraries
-target_link_libraries(my_app ${TORCH_LIBRARIES} Eigen3::Eigen)
+target_link_libraries(main ${TORCH_LIBRARIES} Eigen3::Eigen)
 
-set_property(TARGET my_app PROPERTY CXX_STANDARD 17)
+set_property(TARGET main PROPERTY CXX_STANDARD 17)
