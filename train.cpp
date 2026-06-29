@@ -26,7 +26,7 @@ void Trainer<ModuleType>::train(DataLoaderType& data_loader) {
             auto loss = loss_func_(output, targets);
             loss.backward();
             optimizer_.step();
-            epoch_loss += loss.item<double>();
+            epoch_loss += loss.template item<double>();
             ++batch_count;
         }
         if (epoch % 10 == 0) {

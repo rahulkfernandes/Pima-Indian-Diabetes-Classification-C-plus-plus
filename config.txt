@@ -1,1 +1,5 @@
 data_path=../diabetes.csv
+hidden_size=64
+dropout=0.2
+learning_rate=0.001
+epochs=100

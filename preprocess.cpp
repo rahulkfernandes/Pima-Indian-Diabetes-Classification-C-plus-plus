@@ -88,3 +88,20 @@ Eigen::MatrixXd Scaler::fit_transform(const Eigen::MatrixXd& X) {
     fit(X);
     return transform(X);
 }
+
+/* -------------------- Matrix to Tensor -------------------- */
+std::tuple<torch::Tensor, torch::Tensor> convert_to_tensor(Eigen::MatrixXd X, Eigen::VectorXd y) {
+    torch::Tensor X_tensor = torch::from_blob(
+        X.data(),
+        {X.rows(), X.cols()},
+        torch::kFloat64
+    ).clone().to(torch::kFloat32);
+
+    torch::Tensor y_tensor = torch::from_blob(
+        y.data(),
+        {y.size()},
+        torch::kFloat64
+    ).clone().to(torch::kFloat32).reshape({-1, 1});
+
+    return {X_tensor, y_tensor};
+}
